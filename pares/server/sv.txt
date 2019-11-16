@@ -1,0 +1,3 @@
+Aqui o código da pasta de cima será modificado para funcionar como um server. O server apenas possui duas tabelas de endereços, uma tabela com os clientes e outra com os contribuidores. Ao receber um pedido do cliente, ele vai disponibilizar o endereço do contribuidor.
+
+Ao iniciar o servidor vai abrir um txt para verificar quais os nós ainda estão disponiveis e então passar eles para a tabela na memória principal.
