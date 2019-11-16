@@ -1,0 +1,3 @@
+O contribuidor é iniciado fazendo uma solicitação ao server, para informar ao server que ele está disponível.
+Então ele espera até existir uma solicitação.
+Ele executa o código e envia o resultado de volta ao empregador.
