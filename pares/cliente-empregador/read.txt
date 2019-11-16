@@ -1,0 +1,2 @@
+o cliente-empregador vai solicitar a lista de cliente-contribuidor para o server.
+Com a lista dos clientes em mão, ele vai enviar o código e os parametros como uma string para o cliente-empregador e esperar o resultado.
