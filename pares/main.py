@@ -10,9 +10,11 @@ class Receiver(threading.Thread):
         threading.Thread.__init__(self, name="messenger_receiver")
         self.host = my_host
         self.port = my_port
- 
+
+
     def listen(self):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
         sock.bind((self.host, self.port))
         sock.listen(10)
         while True:
@@ -20,7 +22,7 @@ class Receiver(threading.Thread):
             try:
                 full_message = ""
                 while True:
-                    data = connection.recv(16)
+                    data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
                     full_message = full_message + data.decode(ENCODING)
                     if not data:
                         print("{}: {}".format(client_address, full_message.strip()))
@@ -39,13 +41,13 @@ class Sender(threading.Thread):
         threading.Thread.__init__(self, name="messenger_sender")
         self.host = my_friends_host
         self.port = my_friends_port
- 
+
     def run(self):
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, 20)  # Change TTL (=20) to suit
         while True:
             message = input("")
-            s.connect((self.host, self.port))
-            s.sendall(message.encode(ENCODING))
+            s.sendto(message, (self.host, self.port))
             s.shutdown(2)
             s.close()
  
