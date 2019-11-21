@@ -16,9 +16,9 @@ class Receiver(threading.Thread):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         sock.bind((self.host, self.port))
-        sock.listen(10)
+        connection, client_address = sock.accept()
+        #sock.listen(10)
         while True:
-            connection, client_address = sock.accept()
             try:
                 full_message = ""
                 while True:
@@ -28,8 +28,9 @@ class Receiver(threading.Thread):
                         print("{}: {}".format(client_address, full_message.strip()))
                         break
             finally:
-                connection.shutdown(2)
-                connection.close()
+         #       connection.shutdown(2)
+          #      connection.close()
+                pass
  
     def run(self):
         self.listen()
