@@ -34,7 +34,7 @@ class Sender(threading.Thread):
     def run(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
         while True:
-            message = input("")
+            message = bytes(input(""),'utf-8')
             sock.sendto(message, (self.host, self.port))
 def main():
     my_host = input("which is my host? ")
