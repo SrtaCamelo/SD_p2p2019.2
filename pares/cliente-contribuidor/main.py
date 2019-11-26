@@ -1,21 +1,12 @@
 import socket
 import threading
 from config import * #abre as configuracoes
-import pandas as pd
+#import pandas as pd
 
 ENCODING = 'utf-8'
 
 
-def openUsers():
-    col = pd.read_csv('colaborador.csv', header = 0)
-    col.set_index('usuario', inplace = True)
-    emp = pd.read_csv('empregador.csv', header = 0)
-    emp.set_index('projeto', inplace = True)
-    con = pd.read_csv('controle.csv', header = 0)
-    return col, emp, con
 
-def saveUsers():
-    pass
 
 
 class Receiver(threading.Thread):
