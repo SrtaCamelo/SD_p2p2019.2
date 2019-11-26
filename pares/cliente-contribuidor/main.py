@@ -90,9 +90,13 @@ class ColabStart(Receiver):
         while esp:
             try:
                 #Envia "ACESS: login senha"
+                mensagem = "ACESS: %s %s"%(LOGIN, SENHA)
+                print(mensagem)
+                self.sender.message = mensagem
 
                 #Recebe a confirmacao ou timeout
-                esp = False
+                if addr[0]==self.sender.host:
+                    esp = False
             except:
                 print("Senha errada!")
 
