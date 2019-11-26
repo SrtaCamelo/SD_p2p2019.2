@@ -50,9 +50,10 @@ class Sender(threading.Thread):
 
     def run(self):
         while True:
-            message = bytes(self.message, 'utf-8')
+
             if self.message != "":
                 try:
+                    message = bytes(self.message, 'utf-8')
                     print(self.message)
                     print(message)
                     self.sock.sendto(message, (self.host, self.port))
@@ -63,7 +64,7 @@ class Sender(threading.Thread):
                     self.message = ""
 
 class PeerServer(Receiver):
-    def __init__(self,my_host,my_port,sender):
+    def __init__(self,my_host,my_port,sender,col, emp, con):
         threading.Thread.__init__(self, name="Server")
         self.host = my_host
         self.port = my_port
@@ -89,6 +90,12 @@ class PeerServer(Receiver):
 
             # O Server manda a chave publica se as credenciais forem validas
             elif datas[:6] == 'ACESS:':
+                login = datas.split()[1]
+                senha = datas.split()[2]
+                col_senha = self.col.loc[self.col.iloc[:, -1] == login]["senha"]
+                if senha == col_senha:
+                    pass
+
                 pass
 
             # O Empregador pede novas maquinas
@@ -104,7 +111,10 @@ def main(my_host,my_port):
     print("port:\t\t", my_port)
     sender = Sender()
     sender.start()
-    own = PeerServer(my_host,my_port,sender)
+
+    col, emp, con = openUsers()
+
+    own = PeerServer(my_host,my_port,sender,col, emp, con)
     own.start()
 
 def makehost(my_host, my_port):
@@ -118,7 +128,7 @@ if __name__ == '__main__':
     print("Host:\t\t", host_name)
     main(my_host, my_port)
     #ohost = makehost(my_host, my_port)
-    col,emp,con = openUsers()
+
     co = pd.DataFrame(columns = ["usuario","ip","portas","disponibilidade","projetos","RAM","CPU"])#colaboradores online
     em = pd.DataFrame(columns = ["projeto","ip","porta","orcamento","contrato","colaboradores"])#projetos online
     print()
