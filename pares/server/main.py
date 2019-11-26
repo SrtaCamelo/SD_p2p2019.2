@@ -92,6 +92,10 @@ class PeerServer(Receiver):
             elif datas[:6] == 'ACESS:':
                 login = datas.split()[1]
                 senha = datas.split()[2]
+
+                index = self.col.index[self.col['usuario'] == login]
+                col_senha = self.col.loc[ index , 'senha' ]
+
                 col_senha = self.col.loc[self.col.iloc[:, -1] == login]["senha"]
                 if senha == col_senha:
                     pass
