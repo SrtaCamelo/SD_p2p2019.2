@@ -1,6 +1,6 @@
 import socket
 import threading
-from config import * #abre as configuracoes
+from config import * #abre asconfiguracoes
 import pandas as pd
 import time
 
@@ -69,6 +69,9 @@ class PeerServer(Receiver):
         self.host = my_host
         self.port = my_port
         self.sender = sender
+        self.col = col
+        self.emp = emp
+        self.con = con
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -88,18 +91,24 @@ class PeerServer(Receiver):
                 #time.sleep(2)
                 self.sender.message = "%i"%public
 
+                ### O server ainda tem que guardar a porta desse cara, ou o cara tem que se identificar em todas as transmissoes
+
             # O Server manda a chave publica se as credenciais forem validas
             elif datas[:6] == 'ACESS:':
                 login = datas.split()[1]
                 senha = datas.split()[2]
-
-                index = self.col.index[self.col['usuario'] == login]
-                col_senha = self.col.loc[ index , 'senha' ]
-
-                col_senha = self.col.loc[self.col.iloc[:, -1] == login]["senha"]
+                
+                col_user = self.col.loc[login]
+                col_senha = col_user[0]
+                
                 if senha == col_senha:
-                    pass
+                    self.sender.host = addr[0]
+                    self.sender.port = int(datas.split()[-1])
+                    self.sender.message = "OKAY!"
+                    
 
+            elif datas == "ESTOU TE ESPERANDO!!!":
+                #desaloca o cliente
                 pass
 
             # O Empregador pede novas maquinas

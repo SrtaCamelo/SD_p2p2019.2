@@ -91,8 +91,10 @@ class ColabStart(Receiver):
             try:
                 #Envia "ACESS: login senha"
                 mensagem = "ACESS: %s %s"%(LOGIN, SENHA)
-                print(mensagem)
+                #print(mensagem)
                 self.sender.message = mensagem
+
+                data, addr = self.sock.recvfrom(1024)
 
                 #Recebe a confirmacao ou timeout
                 if addr[0]==self.sender.host:
@@ -105,9 +107,14 @@ class ColabStart(Receiver):
         while esp:
             try:
                 #espera a alocacao
-                esp = False
+                data, addr = self.sock.recvfrom(1024)
+                
+                if addr[0]==self.sender.host:
+                    esp = False
             except:
+                self.sender.message = "ESTOU TE ESPERANDO!!!"
                 print("nao sei")
+                
 
         #Espera o arquivo
         #salva o .py
@@ -136,7 +143,8 @@ def main(my_host,my_port,server_host,server_port,login,senha):
 
     #Aqui o colaborador faz o startup
     svcom = ColabStart(sock[0],sender,login,senha)
-    svcom.start()
+    svcom.listen()
+    #svcom.start()
 
     #O .py com as funcoes eh importado aqui
 
