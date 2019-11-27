@@ -49,6 +49,7 @@ class Sender(threading.Thread):
         self.message = ""
 
     def run(self):
+        otra = false
         while True:
 
             if self.message != "":
@@ -62,6 +63,9 @@ class Sender(threading.Thread):
                     print("erro")
                     #print(ValueError)
                     self.message = ""
+            if otra:
+                #se comunica com todos os vizinhos.
+                pass
 
 class PeerServer(Receiver):
     def __init__(self,my_host,my_port,sender,col, emp, con):
@@ -91,7 +95,7 @@ class PeerServer(Receiver):
                 #time.sleep(2)
                 self.sender.message = "%i"%public
 
-                ### O server ainda tem que guardar a porta desse cara, ou o cara tem que se identificar em todas as transmissoes
+                ### todas as mensagens vao terminar com a porta destino
 
             # O Server manda a chave publica se as credenciais forem validas
             elif datas[:6] == 'ACESS:':
@@ -108,7 +112,7 @@ class PeerServer(Receiver):
                     
 
             elif datas == "ESTOU TE ESPERANDO!!!":
-                #desaloca o cliente
+                #reenvia as informacoes do empregador, ou nao faz nada
                 pass
 
             # O Empregador pede novas maquinas

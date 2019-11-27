@@ -37,6 +37,8 @@ class Sender(threading.Thread):
         self.port = "6666"
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
         self.message = ""
+        ## Aqui eh guardada o numero de controle e a resposta
+        self.tarefas = {}
 
     def run(self):
         while True:
@@ -89,20 +91,21 @@ class ColabStart(Receiver):
 
         while esp:
             try:
-                #Envia "ACESS: login senha"
-                mensagem = "ACESS: %s %s"%(LOGIN, SENHA)
+                #Envia "ACESS: login senha threads porta"
+                mensagem = "ACESS: %s %s %i"%(LOGIN, SENHA, threads_disponiveis, myaddr)
                 #print(mensagem)
                 self.sender.message = mensagem
 
                 data, addr = self.sock.recvfrom(1024)
 
-                #Recebe a confirmacao ou timeout
+                #Recebe a confirmacao ou gera timeout
                 if addr[0]==self.sender.host:
                     esp = False
             except:
                 print("Senha errada!")
 
         esp = True
+        self.sock.settimeout(60)
 
         while esp:
             try:
@@ -112,7 +115,7 @@ class ColabStart(Receiver):
                 if addr[0]==self.sender.host:
                     esp = False
             except:
-                self.sender.message = "ESTOU TE ESPERANDO!!!"
+                self.sender.message = "ESTOU TE ESPERANDO!!! %i"%myaddr
                 print("nao sei")
                 
 
