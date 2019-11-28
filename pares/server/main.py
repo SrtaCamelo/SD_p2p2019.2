@@ -183,50 +183,47 @@ class PeerServer(Receiver):
                 nome_projeto = datas.split()[1] # NOME DO PROJETO
                 aloc_emp     = data.split()[2] # QUANTIDADE DE MAQUINAS ALOCADAS (VISAO DO EMPREGADOR)
                 ip_col = busca_ipColaborador(self.sessao_col,nome_projeto)
+                print(aloc_emp)
+                print(int(self.sessao_emp[nome_projeto][-1]))
+                lista_ip_porta_colab = busca_colaboradores_alocados(self.sessao_col, nome_projeto)
 
-                if ip_col != None: # EXISTE COLABORADOR DISPONIVEL
-
-                    if aloc_emp != int(self.sessao_emp[nome_projeto][-1]):  # RESOLVENDO PROBLEMA DE INCONSISTENCIA
-                        lista_ip_porta_colab = busca_colaboradores_alocados(self.sessao_col,nome_projeto)
-                        print('printando lista')
-                        print(lista_ip_porta_colab)
-                        ## ENVIAR PARA O EMPREGADOR A LISTA DE COLABORADORES IP-PORTA
-                        for lista in lista_ip_porta_colab:
-                            self.sender.host = ip_emp
-                            self.sender.port = int(porta_emp)
-
-                            message = "LET IT GO! " + lista[0] + " " + lista[1] + " " + lista[2]
-                            message = bytes(message, 'utf-8')
-
-                            self.sender.sock.sendto(message, (ip_emp, int(porta_emp)))
-
-                    else:  # EXISTE INCONSISTENCIA
-                        th_col = self.sessao_col[ip_col][2]
-                        porta_col = self.sessao_col[ip_col][1]
-                        # "LET IT GO! IP_COL TH_COL PORTA_COL"
-                        print("LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col)
-
-
-
+                if int(aloc_emp) != int(self.sessao_emp[nome_projeto][-1]):  # RESOLVENDO PROBLEMA DE INCONSISTENCIA
+                    self.sessao_emp[nome_projeto][-1] = len(lista_ip_porta_colab)
+                    print('printando lista')
+                    print(lista_ip_porta_colab)
+                    ## ENVIAR PARA O EMPREGADOR A LISTA DE COLABORADORES IP-PORTA
+                    for lista in lista_ip_porta_colab:
                         self.sender.host = ip_emp
                         self.sender.port = int(porta_emp)
 
-                        message = "LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col
+                        message = "LET IT GO! " + lista[0] + " " + lista[1] + " " + lista[2] #IP NUM_TH PORTA
                         message = bytes(message, 'utf-8')
 
                         self.sender.sock.sendto(message, (ip_emp, int(porta_emp)))
+                elif ip_col != None: # EXISTE COLABORADOR DISPONIVEL
+                    self.sessao_col[ip_col][-1] = nome_projeto
+                    self.sessao_emp[nome_projeto][-1] = len(lista_ip_porta_colab)
 
-                        #self.sender
+                    th_col = self.sessao_col[ip_col][2]
+                    porta_col = self.sessao_col[ip_col][1]
+                    self.sender.host = ip_emp
+                    self.sender.port = int(porta_emp)
 
-                        #self.sender.message = "LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col
+                    message = "LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col
+                    message = bytes(message, 'utf-8')
 
-                        #time.sleep(1)
-                        # O BEG envia para o colaborador um aviso de confirmacao da alocacao e altera a tabela dele para act = "NOME_DO_PROJETO"
-                        self.sender.host = ip_col
-                        self.sender.port = int(porta_col)
-                        self.sender.message = "LET IT GO! %s %s"%(ip_emp,porta_emp)
-                else: # NAO EXISTE COLABORADOR DISPONIVEL
-                    pass
+                    self.sender.sock.sendto(message, (ip_emp, int(porta_emp)))
+
+                    # O BEG envia para o colaborador um aviso de confirmacao da alocacao e altera a tabela dele para act = "NOME_DO_PROJETO"
+                    self.sender.host = ip_col
+                    self.sender.port = int(porta_col)
+                    message = "LET IT GO! %s %s" % (ip_emp, porta_emp)
+                    message = bytes(message, 'utf-8')
+
+                    self.sender.sock.sendto(message, (ip_col, int(porta_col)))
+
+                else:  # NAO EXISTE INCONSISTENCIA
+                    print("puta que pariu22")
             # O Server pede a confirmacao dos clientes para manterem logados
             elif datas == 'AMIGO EU ESTOU AQUI!':
                 pass
