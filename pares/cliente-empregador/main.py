@@ -124,19 +124,26 @@ class FeetchCol(Receiver):
                         self.sender.message = 'AMIGO EU ESTOU AQUI!'
                     elif datas.split("!")[0] == "LET IT GO":
                         col, th, porta = datas.split("!")[1].split()
-                        if not(col in self.col):
+                        if not(col in self.server.col):
                             th = int(th)
-                            print("Let it go 1\n\n\n")
                             porta = int(porta)
                             portas = list(range(porta, porta+th))
-                            print("Let it go 2\n\n\n")
                             self.server.alocados += 1
-                            print("Let it go 3\n\n\n")
-                            self.col[col] = {"threads":th, "portas":portas, "tarefas":{}}
-                        print(self.col)
+                            self.server.col[col] = {"threads":th, "portas":portas, "tarefas":{}}
+                        print(self.server.col)
                 elif addr[0] in self.col:
+                    if datas.split()[0] in modulos:
+                        modulo = datas.split()[0]
+                        posicao = int(datas.split()[1])
+                        porta = int(datas.split()[-1])
+                        self.sender.sendto(modulos[modulo][1][posicao] (addr[0], porta))
                     #O empregador vai transferir o arquivo para o colaborador
-                    pass
+                    else:
+                        mensagem = ""
+                        for i in modulos:
+                            mensagem = mensagem + " %s"%i
+                        porta = int(datas.split()[-1])
+                        self.sender.sendto(modulos[modulo][1][posicao] (addr[0], porta))
             except:
                 print("Time Out")
 
