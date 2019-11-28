@@ -1,3 +1,6 @@
+### todas as mensagens vao terminar com a porta destino
+
+
 import socket
 import threading
 from config import * #abre asconfiguracoes
@@ -58,6 +61,8 @@ class Sender(threading.Thread):
                     print(self.message)
                     print(message)
                     self.sock.sendto(message, (self.host, self.port))
+                    print(self.host)
+                    print(self.port)
                     self.message = ""
                 except ValueError:
                     print("erro")
@@ -76,8 +81,8 @@ class PeerServer(Receiver):
         self.col = col
         self.emp = emp
         self.con = con
-        self.sessao_col = {}
-        self.sessao_emp = {}
+        self.sessao_col = {} # Sessao Atual do Colaborador
+        self.sessao_emp = {} # Sessao Atual do Empregador
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -98,12 +103,12 @@ class PeerServer(Receiver):
                 #time.sleep(2)
                 # O Server manda a chave publica
                 self.sender.message = "%i"%public
-                
+               # print(self.sender.host)
 
-                ### todas as mensagens vao terminar com a porta destino
 
 
             # O server le a mensagem e verifica o login e senha
+            # CONLABORADOR
             elif operacao == 'ACESSCON:':
                 login = datas.split()[1]
                 senha = datas.split()[2]
@@ -121,13 +126,13 @@ class PeerServer(Receiver):
                     th = datas.split()[3]
                     porta = datas.split()[-1]
                     indice = addr[0]
-                    projetos = self.col.loc[login].tolist()
+                    projetos = self.col.loc[login].tolist()[2]
                     
                     self.sessao_col[indice] = [login, porta, th, projetos, "nao alocado"]
 
                 print(self.sessao_col)
 
-
+            # Empregador
             elif operacao == "ACESSEMP:":
                 login = datas.split()[1]
                 senha = datas.split()[2]
@@ -146,18 +151,33 @@ class PeerServer(Receiver):
                         self.sender.message = "OKAY!"
 
                         #Ainda falta guardar o empregador na tabela self.emp
+                        indice = addr[0]
+                        porta = datas.split()[-1]
+                        self.sessao_emp[proje] = [indice,porta,login,"depois","depois",0,0,0]
+                        print(self.sessao_emp)
                     
-
+            # COLABORADOR
             elif datas == "ESTOU TE ESPERANDO!!!":
-                #reenvia as informacoes do empregador, ou nao faz nada
-                pass
+                # reenvia as informacoes do empregador, ou nao faz nada
+                # O Server Encontra na secao atual dos colaborados qual projeto esta alocado e envia confirmacao caso exista para Coloborador
+                # Se nao houver nada na secao atual...ele faz porra nenhuma (PASS)
+                indice = addr[0]
+                if self.sessao_col[indice][-1] != "nao alocado":
+                    ip_emp = self.sessao_emp[self.sessao_col[indice][-1]][0]
+                    porta = self.sessao_emp[self.sessao_col[indice][-1]][1]
+                    self.sender.message = "LET IT GO! " + ip_emp + " " + str(porta)
+                else:
+                    print("FAZENDO PORRA NENHUMA E SE FODA VOCE!!!")
+                    pass
 
             # O Empregador pede novas maquinas
             elif operacao == 'BEG!':
                 # atualiza o cliente para ele se comunicar com o server
+                # Mandar o IP e as POrtas do Colaborador para o EMpregador, com a finalidade de criar comunicao entre eles
+                ip_emp = addr[0]
+                porta_emp = data.split()[-1]
                 self.sender.message = "LET IT GO! aosdifhaoghiasdif"
-                pass
-
+                # O BEG envia para o colaborador um aviso de confirmacao da alocacao e altera a tabela dele para act = "NOME_DO_PROJETO"
             # O Server pede a confirmacao dos clientes para manterem logados
             elif datas == 'AMIGO EU ESTOU AQUI!':
                 pass
