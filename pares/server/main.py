@@ -135,6 +135,8 @@ class PeerServer(Receiver):
 
             # O Empregador pede novas maquinas
             elif operacao == 'BEG!':
+                # atualiza o cliente para ele se comunicar com o server
+                self.sender.message = "LET IT GO! aosdifhaoghiasdif"
                 pass
 
             # O Server pede a confirmacao dos clientes para manterem logados

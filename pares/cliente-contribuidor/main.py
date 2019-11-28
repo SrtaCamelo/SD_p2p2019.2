@@ -110,9 +110,14 @@ class ColabStart(Receiver):
             try:
                 #espera a alocacao
                 data, addr = self.sock.recvfrom(1024)
+
+                data = data.decode()
                 
                 if addr[0]==self.sender.host:
-                    esp = False
+                    if data == "ONDE ESTA AGORA?":
+                        self.sender.message = 'AMIGO EU ESTOU AQUI!'
+                    elif data.split("!")[0] == "LET IT GO":
+                        esp = False
             except:
                 self.sender.message = "ESTOU TE ESPERANDO!!!"
                 print("nao sei")
