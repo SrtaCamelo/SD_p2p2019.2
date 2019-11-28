@@ -141,9 +141,9 @@ class FeetchCol(Receiver):
                     else:
                         mensagem = ""
                         for i in modulos:
-                            mensagem = mensagem + " %s"%i
+                            mensagem = mensagem + " %s %i"%(i, modulos[i][0])
                         porta = int(datas.split()[-1])
-                        self.sender.sendto(modulos[modulo][1][posicao] (addr[0], porta))
+                        self.sender.sendto(bytes(mensagem), (addr[0], porta))
             except:
                 print("Time Out")
 

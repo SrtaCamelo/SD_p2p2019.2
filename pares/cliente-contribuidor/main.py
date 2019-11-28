@@ -124,8 +124,12 @@ class ColabStart(Receiver):
                 
         esp = True
 
+        #recebe o(os) script(s)
         while esp:
-            pass
+            try:
+                pass
+            except:
+                print("Tiem ot")
         #Espera o arquivo
         #salva o .py
 
