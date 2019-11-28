@@ -12,7 +12,7 @@
   <component name="CoverageDataManager">
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$teste.coverage" NAME="teste Coverage Results" MODIFIED="1574346737195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares" />
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$main.coverage" NAME="main Coverage Results" MODIFIED="1574346234935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares" />
-    <SUITE FILE_PATH="coverage/SD_p2p2019_2$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1574972796274" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/server" />
+    <SUITE FILE_PATH="coverage/SD_p2p2019_2$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1574980929361" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/server" />
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1574945133849" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/cliente-contribuidor" />
   </component>
   <component name="FileEditorManager">
@@ -35,20 +35,20 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pares/server/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="197" column="90" selection-start-line="197" selection-start-column="90" selection-end-line="197" selection-end-column="90" />
+            <state relative-caret-position="100">
+              <caret line="188" lean-forward="true" selection-start-line="188" selection-end-line="188" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="config.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pares/server/config.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+            <state relative-caret-position="187">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -77,8 +77,8 @@
         <option value="$PROJECT_DIR$/pares/main.py" />
         <option value="$PROJECT_DIR$/pares/cliente-contribuidor/main.py" />
         <option value="$PROJECT_DIR$/pares/teste.py" />
-        <option value="$PROJECT_DIR$/pares/server/main.py" />
         <option value="$PROJECT_DIR$/pares/server/config.py" />
+        <option value="$PROJECT_DIR$/pares/server/main.py" />
       </list>
     </option>
   </component>
@@ -261,9 +261,9 @@
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.50980395" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.50980395" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.25340393" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25340393" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -408,17 +408,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pares/server/main.py">
+    <entry file="file://$PROJECT_DIR$/pares/server/config.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="197" column="90" selection-start-line="197" selection-start-column="90" selection-end-line="197" selection-end-column="90" />
+        <state relative-caret-position="187">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pares/server/config.py">
+    <entry file="file://$PROJECT_DIR$/pares/server/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="24" selection-start-line="9" selection-start-column="24" selection-end-line="9" selection-end-column="24" />
+        <state relative-caret-position="100">
+          <caret line="188" lean-forward="true" selection-start-line="188" selection-end-line="188" />
         </state>
       </provider>
     </entry>
