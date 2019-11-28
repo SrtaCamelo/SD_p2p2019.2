@@ -3,6 +3,8 @@ import threading
 from config import * #abre as configuracoes
 import pandas as pd
 
+import PEER
+
 ENCODING = 'utf-8'
 
 
@@ -52,14 +54,7 @@ class Sender(threading.Thread):
                     #print(ValueError)
                 self.message = ""
 
-class PeerColab(Receiver):
-    def __init__(self,sock,th,sender):
-        threading.Thread.__init__(self, name="Colab_%i"%th)
-        self.sock = sock
-        self.sender = sender
 
-    def listen(self):
-        pass
 
 class ColabStart(Receiver):
     def __init__(self,sock,sender,login,senha):
