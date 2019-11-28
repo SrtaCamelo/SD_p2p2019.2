@@ -1,5 +1,5 @@
 ### todas as mensagens vao terminar com a porta destino
-
+### Nome dos projetos são UNICOS CARALHO
 
 import socket
 import threading
@@ -83,6 +83,7 @@ class PeerServer(Receiver):
         self.con = con
         self.sessao_col = {} # Sessao Atual do Colaborador
         self.sessao_emp = {} # Sessao Atual do Empregador
+        self.sessao_emp_ip = {} # A partir do IP do Empregador tem-se o nome do projeto
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -123,12 +124,12 @@ class PeerServer(Receiver):
                     self.sender.port = int(datas.split()[-1])
                     self.sender.message = "OKAY!"
 
-                    th = datas.split()[3]
-                    porta = datas.split()[-1]
-                    indice = addr[0]
+                    th = datas.split()[3] # QUANTIDADE DE THRADES
+                    porta = datas.split()[-1] # PORTA DO COLABORADOR
+                    indice = addr[0] # IP DO COLABORADOR
                     projetos = self.col.loc[login].tolist()[2]
                     
-                    self.sessao_col[indice] = [login, porta, th, projetos, "nao alocado"]
+                    self.sessao_col[indice] = [login, porta, th, projetos, ""]
 
                 print(self.sessao_col)
 
@@ -151,9 +152,9 @@ class PeerServer(Receiver):
                         self.sender.message = "OKAY!"
 
                         #Ainda falta guardar o empregador na tabela self.emp
-                        indice = addr[0]
+                        ip_emp = addr[0]
                         porta = datas.split()[-1]
-                        self.sessao_emp[proje] = [indice,porta,login,"depois","depois",0,0,0]
+                        self.sessao_emp[proje] = [ip_emp,porta,login,"depois","depois",0,0,0]
                         print(self.sessao_emp)
                     
             # COLABORADOR
@@ -162,7 +163,10 @@ class PeerServer(Receiver):
                 # O Server Encontra na secao atual dos colaborados qual projeto esta alocado e envia confirmacao caso exista para Coloborador
                 # Se nao houver nada na secao atual...ele faz porra nenhuma (PASS)
                 indice = addr[0]
-                if self.sessao_col[indice][-1] != "nao alocado":
+                print('########## TESTE ############')
+                print(self.sessao_col[indice][-1])
+                print('########## TESTE ############')
+                if self.sessao_col[indice][-1] != "":
                     ip_emp = self.sessao_emp[self.sessao_col[indice][-1]][0]
                     porta = self.sessao_emp[self.sessao_col[indice][-1]][1]
                     self.sender.message = "LET IT GO! " + ip_emp + " " + str(porta)
@@ -175,12 +179,37 @@ class PeerServer(Receiver):
                 # atualiza o cliente para ele se comunicar com o server
                 # Mandar o IP e as POrtas do Colaborador para o EMpregador, com a finalidade de criar comunicao entre eles
                 ip_emp = addr[0]
-                porta_emp = data.split()[-1]
-                self.sender.message = "LET IT GO! aosdifhaoghiasdif"
+                nome_projeto = datas.split()[1]
+                porta_emp = datas.split()[-1]
+                ip_col = busca_ipColaborador(self.sessao_col,nome_projeto)
+                th_col = self.sessao_col[ip_col][2]
+                porta_col = self.sessao_col[ip_col][1]
+                # "LET IT GO! IP_COL TH_COL PORTA_COL"
+                print("################# TESTE2 ###############")
+                print("LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col)
+                print("################# TESTE2 ###############")
+                self.sender.host = ip_emp
+                self.sender.port = int(porta_emp)
+                self.sender.message = "LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col
+                time.sleep(1)
                 # O BEG envia para o colaborador um aviso de confirmacao da alocacao e altera a tabela dele para act = "NOME_DO_PROJETO"
+                self.sender.host = ip_col
+                self.sender.port = int(porta_col)
+                self.sender.message = "LET IT GO! %s %s"%(ip_emp,porta_emp)
+
+
+
             # O Server pede a confirmacao dos clientes para manterem logados
             elif datas == 'AMIGO EU ESTOU AQUI!':
                 pass
+
+
+## Essa Funcao busca o Ip do Colaborador a partir do nome do projeto
+def busca_ipColaborador(s_col,nom_pro):
+    for i in s_col:
+        if (nom_pro in s_col[i][3].split()) or "todos" in s_col[i][3].split():
+            if s_col[i][4] == "":
+                return i
 
 def main(my_host,my_port):
     print("@:\t\t", my_host)
