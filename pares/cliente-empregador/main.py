@@ -105,7 +105,7 @@ class FeetchCol(Receiver):
 
         while esp:
             try:
-                mensagem = "BEG! %s %s"%(PROJETO, myaddr)
+                mensagem = "BEG! %s %i %s"%(PROJETO, self.server.alocados, myaddr)
                 self.sender.message = mensagem
                 data, addr = self.sock.recvfrom(1024)
                 datas = data.decode()
@@ -114,11 +114,13 @@ class FeetchCol(Receiver):
                     if datas == "ONDE ESTA AGORA?":
                         self.sender.message = 'AMIGO EU ESTOU AQUI!'
                     elif datas.split("!")[0] == "LET IT GO":
-                        col, th, porta = data.split("!")[1].split()
-                        portas = []
-                        for i in range(th):
-                            portas.append(porta+i)
-                        self.col[col] = {"threads": th, "portas":portas, "tarefas":{}}
+                        col, th, porta = datas.split("!")[1].split()
+                        if not(col in self.col):
+                            th = int(th)
+                            porta = int(porta)
+                            portas = list(range(porta, porta+th))
+                            self.server.alocados += 1
+                            self.col[col] = {"threads": th, "portas":portas, "tarefas":{}}
                 elif addr[0] in self.col:
                     #O empregador vai transferir o arquivo para o colaborador
                     pass
@@ -136,6 +138,7 @@ class PeerEmp(Receiver):
         threading.Thread.__init__(self, name="Empregador")
         self.sock = sock
         self.sender = sender
+        self.alocados = 0
         self.col = {} #sessao atual dos colaboradores
         self.trabalhos = {} #trabalhos ja realizados numero:[chamada, resultado]
 
@@ -154,23 +157,26 @@ def main(my_host,my_port,server_host,server_port,login,senha):
     print("port:\t\t", my_port)
 
     #Aqui eh gerada a unica porta para enviar informacao
-    sender = Sender()
-    sender.start()
-    sender.host = server_host
-    sender.port = server_port
+    sendera = Sender()
+    sendera.start()
+    sendera.host = server_host
+    sendera.port = server_port
 
-    #Aqui sao gerados os sockets para receber mensagens
+    senderb = Sender()
+    senderb.start()
+
+    #Aqui sao gerados os sockets para receber mensagens dos clientes
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.bind((my_host, my_port+1))
 
-    svcom = PeerEmp(sock, sender)
+    svcom = PeerEmp(sock, sendera)
     #svcom.start()
 
     socksv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     socksv.bind((my_host, my_port))
 
     #Aqui o colaborador faz o startup
-    feet = FeetchCol(socksv,sender,svcom,login,senha)
+    feet = FeetchCol(socksv,senderb,svcom,login,senha)
     #svcom.listen()
     feet.start()
 
