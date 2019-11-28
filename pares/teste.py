@@ -43,6 +43,7 @@ def main():
     my_friends_host = input("what is your friend's host? ")
     my_friends_port = int(input("what is your friend's port?"))
     sender = Sender(my_friends_host, my_friends_port)
+    sender.run()
     treads = [receiver.start(), sender.start()]
     return [receiver, sender]
 
