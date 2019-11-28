@@ -112,6 +112,13 @@ class ColabStart(Receiver):
                     if data == "ONDE ESTA AGORA?":
                         self.sender.message = 'AMIGO EU ESTOU AQUI!'
                     elif data.split("!")[0] == "LET IT GO":
+                        #Extraí o IP e a Porta do Empregador
+                        self.sender.host = data.split()[-2]
+                        self.sender.port = int(data.split()[-1])
+                        message = "TA PEGANDO CARAI"
+                        message = bytes(message, 'utf-8')
+
+                        self.sender.sock.sendto(message, data.split()[-2],int(data.split()[-1]))
                         esp = False
             except:
                 self.sender.message = "ESTOU TE ESPERANDO!!!"
@@ -122,7 +129,16 @@ class ColabStart(Receiver):
         #recebe o(os) script(s)
         while esp:
             try:
-                pass
+
+                message = "LET IT GO! " + ip_col + " " + str(th_col) + " " + porta_col
+                message = bytes(message, 'utf-8')
+
+                self.sender.sock.sendto(message, (ip_emp, int(porta_emp)))
+                # espera a alocacao
+                data, addr = self.sock.recvfrom(1024)
+                datas = data.decode()
+
+
             except:
                 print("Tiem ot")
         #Espera o arquivo
