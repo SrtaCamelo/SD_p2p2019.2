@@ -49,7 +49,7 @@ class Sender(threading.Thread):
         self.message = ""
 
     def run(self):
-        otra = false
+        otra = False
         while True:
 
             if self.message != "":
@@ -76,6 +76,8 @@ class PeerServer(Receiver):
         self.col = col
         self.emp = emp
         self.con = con
+        self.sessao_col = {}
+        self.sessao_emp = {}
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -85,10 +87,11 @@ class PeerServer(Receiver):
             data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
             datas = data.decode()
             print ("received message:", addr, datas)
-            
+
+            operacao = datas.split()[0]
 
             # O cliente inicia a comunicacao
-            if datas[:5] == 'Hello':
+            if operacao == 'Hello':
                 self.sender.host = addr[0]
                 self.sender.port = int(datas.split()[-1])
                 print(self.sender.port)
@@ -98,17 +101,32 @@ class PeerServer(Receiver):
                 ### todas as mensagens vao terminar com a porta destino
 
             # O Server manda a chave publica se as credenciais forem validas
-            elif datas[:6] == 'ACESS:':
+            elif operacao == 'ACESSCON:':
                 login = datas.split()[1]
                 senha = datas.split()[2]
                 
                 col_user = self.col.loc[login]
                 col_senha = col_user[0]
+
+                print(senha, col_senha)
                 
                 if senha == col_senha:
                     self.sender.host = addr[0]
                     self.sender.port = int(datas.split()[-1])
                     self.sender.message = "OKAY!"
+
+                    th = datas.split()[3]
+                    porta = datas.split()[-1]
+                    indice = addr[0]
+                    projetos = self.col.loc[login].tolist()
+                    
+                    self.sessao_col[indice] = [login, porta, th, projetos]
+
+                print(self.sessao_col)
+
+
+            elif operacao == "ACESSEMP:":
+                pass
                     
 
             elif datas == "ESTOU TE ESPERANDO!!!":
@@ -116,7 +134,7 @@ class PeerServer(Receiver):
                 pass
 
             # O Empregador pede novas maquinas
-            elif datas[:4] == 'BEG!':
+            elif operacao == 'BEG!':
                 pass
 
             # O Server pede a confirmacao dos clientes para manterem logados

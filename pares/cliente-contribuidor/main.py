@@ -78,7 +78,7 @@ class ColabStart(Receiver):
         while esp:
             try:
                 #Envia a porta e espera a chave publica
-                self.sender.message = "Hello, port %i"%myaddr
+                self.sender.message = "Hello port %i"%myaddr
                 data, addr = self.sock.recvfrom(1024)  # buffer size is 1024 bytes
                 print ("received message:", addr, data)
                 
@@ -92,8 +92,7 @@ class ColabStart(Receiver):
         while esp:
             try:
                 #Envia "ACESS: login senha threads porta"
-                mensagem = "ACESS: %s %s %i"%(LOGIN, SENHA, threads_disponiveis, myaddr)
-                #print(mensagem)
+                mensagem = "ACESSCON: %s %s %i %s"%(LOGIN, SENHA, threads_disponiveis, myaddr)
                 self.sender.message = mensagem
 
                 data, addr = self.sock.recvfrom(1024)
@@ -115,7 +114,7 @@ class ColabStart(Receiver):
                 if addr[0]==self.sender.host:
                     esp = False
             except:
-                self.sender.message = "ESTOU TE ESPERANDO!!! %i"%myaddr
+                self.sender.message = "ESTOU TE ESPERANDO!!!"
                 print("nao sei")
                 
 
