@@ -96,11 +96,14 @@ class PeerServer(Receiver):
                 self.sender.port = int(datas.split()[-1])
                 print(self.sender.port)
                 #time.sleep(2)
+                # O Server manda a chave publica
                 self.sender.message = "%i"%public
+                
 
                 ### todas as mensagens vao terminar com a porta destino
 
-            # O Server manda a chave publica se as credenciais forem validas
+
+            # O server le a mensagem e verifica o login e senha
             elif operacao == 'ACESSCON:':
                 login = datas.split()[1]
                 senha = datas.split()[2]
@@ -120,13 +123,29 @@ class PeerServer(Receiver):
                     indice = addr[0]
                     projetos = self.col.loc[login].tolist()
                     
-                    self.sessao_col[indice] = [login, porta, th, projetos]
+                    self.sessao_col[indice] = [login, porta, th, projetos, "nao alocado"]
 
                 print(self.sessao_col)
 
 
             elif operacao == "ACESSEMP:":
-                pass
+                login = datas.split()[1]
+                senha = datas.split()[2]
+                proje = datas.split()[3]
+                
+                col_user = self.col.loc[login]
+                col_senha = col_user[0]
+
+                print(senha, col_senha)
+                
+                if senha == col_senha:
+                    emp_proje = self.emp.loc[proje].to_list()
+                    if login == emp_proje[0]:
+                        self.sender.host = addr[0]
+                        self.sender.port = int(datas.split()[-1])
+                        self.sender.message = "OKAY!"
+
+                        #Ainda falta guardar o empregador na tabela self.emp
                     
 
             elif datas == "ESTOU TE ESPERANDO!!!":
