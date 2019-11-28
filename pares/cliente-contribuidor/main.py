@@ -122,7 +122,10 @@ class ColabStart(Receiver):
                 self.sender.message = "ESTOU TE ESPERANDO!!!"
                 print("nao sei")
                 
+        esp = True
 
+        while esp:
+            pass
         #Espera o arquivo
         #salva o .py
 
