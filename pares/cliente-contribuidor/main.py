@@ -1,7 +1,7 @@
 import socket
 import threading
 from config import * #abre as configuracoes
-#import pandas as pd
+import pandas as pd
 
 ENCODING = 'utf-8'
 
