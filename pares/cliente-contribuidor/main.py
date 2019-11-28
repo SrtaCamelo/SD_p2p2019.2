@@ -104,7 +104,7 @@ class ColabStart(Receiver):
                 print("Senha errada!")
 
         esp = True
-        self.sock.settimeout(60)
+        self.sock.settimeout(20)
 
         while esp:
             try:

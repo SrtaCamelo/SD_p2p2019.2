@@ -97,7 +97,7 @@ class FeetchCol(Receiver):
                 print("Senha errada!")
 
         esp = True
-        self.sock.settimeout(60)
+        self.sock.settimeout(5)
 
         self.server.start()
 
@@ -105,10 +105,23 @@ class FeetchCol(Receiver):
 
         while esp:
             try:
-                mensagem = "BEG! %s"%myaddr
+                mensagem = "BEG! %s %s"%(PROJETO, myaddr)
+                self.sender.message = mensagem
                 data, addr = self.sock.recvfrom(1024)
+                datas = data.decode()
+                print(datas)
                 if addr[0] == server_host:
-                    esp = False
+                    if datas == "ONDE ESTA AGORA?":
+                        self.sender.message = 'AMIGO EU ESTOU AQUI!'
+                    elif datas.split("!")[0] == "LET IT GO":
+                        col, th, porta = data.split("!")[1].split()
+                        portas = []
+                        for i in range(th):
+                            portas.append(porta+i)
+                        self.col[col] = {"threads": th, "portas":portas, "tarefas":{}}
+                elif addr[0] in self.col:
+                    #O empregador vai transferir o arquivo para o colaborador
+                    pass
             except:
                 print("Time Out")
 
@@ -124,9 +137,17 @@ class PeerEmp(Receiver):
         self.sock = sock
         self.sender = sender
         self.col = {} #sessao atual dos colaboradores
+        self.trabalhos = {} #trabalhos ja realizados numero:[chamada, resultado]
 
     def listen(self):
-        pass
+        #o Empregador vai carregar um script e vai processar ele aqui.
+        #o parse vai encontrar as definicoes de variaveis e passalas para os colaboradores
+        #O parse vai segmentar o que pode ser paralelizavel dentro de um bloco
+        #Ao encontrar um prange(), todas as chamadas serao feitas de forma paralela
+        script = list(range(1000))
+        for i in script:
+            while True:
+                pass
 
 def main(my_host,my_port,server_host,server_port,login,senha):
     print("@:\t\t", my_host)
