@@ -53,11 +53,12 @@ class Sender(threading.Thread):
                 self.message = ""
 
 
-class PeerEmp(Receiver):
-    def __init__(self,sock,sender,login,senha):
-        threading.Thread.__init__(self, name="Empregador")
+class FeetchCol(Receiver):
+    def __init__(self,sock,sender,server,login,senha):
+        threading.Thread.__init__(self, name="Feetch")
         self.sock = sock
         self.sender = sender
+        self.server = server #esse eh o thread que envia tarefas para os colaboradores
 
     def listen(self):
 
@@ -98,13 +99,34 @@ class PeerEmp(Receiver):
         esp = True
         self.sock.settimeout(60)
 
+        self.server.start()
+
+        #BEG
+
+        while esp:
+            try:
+                mensagem = "BEG! %s"%myaddr
+                data, addr = self.sock.recvfrom(1024)
+                if addr[0] == server_host:
+                    esp = False
+            except:
+                print("Time Out")
+
         #Espera o arquivo
         #salva o .py
 
     def run(self):
         self.listen()
 
+class PeerEmp(Receiver):
+    def __init__(self,sock,sender):
+        threading.Thread.__init__(self, name="Empregador")
+        self.sock = sock
+        self.sender = sender
+        self.col = {} #sessao atual dos colaboradores
 
+    def listen(self):
+        pass
 
 def main(my_host,my_port,server_host,server_port,login,senha):
     print("@:\t\t", my_host)
@@ -117,23 +139,23 @@ def main(my_host,my_port,server_host,server_port,login,senha):
     sender.port = server_port
 
     #Aqui sao gerados os sockets para receber mensagens
-    sock = []
-    for i in range(threads_disponiveis):
-        a = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        a.bind((my_host, my_port+i))
-        sock.append(a)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind((my_host, my_port+1))
 
-    #Aqui o colaborador faz o startup
-    svcom = PeerEmp(sock[0],sender,login,senha)
-    svcom.listen()
+    svcom = PeerEmp(sock, sender)
     #svcom.start()
 
-    #O .py com as funcoes eh importado aqui
+    socksv = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    socksv.bind((my_host, my_port))
 
-    #Sao gerados os i threads da aplicacao
-    for i in sock:
-        #Um objeto da classe PeerColab() eh declarado
-        print(i)
+    #Aqui o colaborador faz o startup
+    feet = FeetchCol(socksv,sender,svcom,login,senha)
+    #svcom.listen()
+    feet.start()
+
+    #Inicia o PeerEmp
+
+    #O .py com as funcoes eh importado aqui
 
 def makehost(my_host, my_port):
     receiver = Receiver(my_host, my_port)
