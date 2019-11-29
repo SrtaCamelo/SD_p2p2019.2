@@ -14,40 +14,25 @@
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$teste.coverage" NAME="teste Coverage Results" MODIFIED="1574346737195" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares" />
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$config__1_.coverage" NAME="config (1) Coverage Results" MODIFIED="1575049536547" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/cliente-empregador" />
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$main.coverage" NAME="main Coverage Results" MODIFIED="1575051957640" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/cliente-empregador" />
-    <SUITE FILE_PATH="coverage/SD_p2p2019_2$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1575051944739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/server" />
+    <SUITE FILE_PATH="coverage/SD_p2p2019_2$main__2_.coverage" NAME="main (2) Coverage Results" MODIFIED="1575054449312" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/server" />
     <SUITE FILE_PATH="coverage/SD_p2p2019_2$main__1_.coverage" NAME="main (1) Coverage Results" MODIFIED="1575051951794" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/pares/cliente-contribuidor" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="config.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/pares/server/config.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="153">
+              <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pares/server/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="13" column="23" lean-forward="true" selection-start-line="10" selection-end-line="11" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pares/cliente-contribuidor/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="88">
-              <caret line="190" column="25" selection-start-line="190" selection-start-column="25" selection-end-line="190" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pares/cliente-empregador/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-              <folding>
-                <element signature="e#0#13#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="323">
+              <caret line="23" lean-forward="true" selection-start-line="10" selection-end-line="11" />
             </state>
           </provider>
         </entry>
@@ -79,12 +64,12 @@
         <option value="$PROJECT_DIR$/pares/teste.py" />
         <option value="$PROJECT_DIR$/pares/pramandar.py" />
         <option value="$PROJECT_DIR$/pares/cliente-contribuidor/PEER.py" />
-        <option value="$PROJECT_DIR$/pares/server/config.py" />
         <option value="$PROJECT_DIR$/pares/cliente-empregador/config.py" />
         <option value="$PROJECT_DIR$/pares/cliente-contribuidor/config.py" />
         <option value="$PROJECT_DIR$/pares/server/main.py" />
         <option value="$PROJECT_DIR$/pares/cliente-empregador/main.py" />
         <option value="$PROJECT_DIR$/pares/cliente-contribuidor/main.py" />
+        <option value="$PROJECT_DIR$/pares/server/config.py" />
       </list>
     </option>
   </component>
@@ -125,18 +110,6 @@
               <item name="SD_p2p2019.2" type="b2602c69:ProjectViewProjectNode" />
               <item name="SD_p2p2019.2" type="462c0819:PsiDirectoryNode" />
               <item name="pares" type="462c0819:PsiDirectoryNode" />
-              <item name="cliente-contribuidor" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SD_p2p2019.2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SD_p2p2019.2" type="462c0819:PsiDirectoryNode" />
-              <item name="pares" type="462c0819:PsiDirectoryNode" />
-              <item name="cliente-empregador" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SD_p2p2019.2" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SD_p2p2019.2" type="462c0819:PsiDirectoryNode" />
-              <item name="pares" type="462c0819:PsiDirectoryNode" />
               <item name="server" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -165,7 +138,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.main (2)">
     <configuration name="config (1)" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="SD_p2p2019.2" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -270,9 +243,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main (2)" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.main (1)" />
-        <item itemvalue="Python.main (2)" />
         <item itemvalue="Python.config (1)" />
         <item itemvalue="Python.config" />
       </list>
@@ -293,15 +266,16 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32843137" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Python Console" order="7" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.5669935" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.5669935" />
       <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2647504" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2647504" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="right" id="Database" order="3" />
       <window_info anchor="right" id="SciView" order="3" />
@@ -522,13 +496,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pares/server/config.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="9" column="19" selection-start-line="9" selection-end-line="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pares/cliente-contribuidor/main.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="88">
@@ -549,10 +516,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pares/server/main.py">
+    <entry file="file://$PROJECT_DIR$/pares/server/config.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
-          <caret line="13" column="23" lean-forward="true" selection-start-line="10" selection-end-line="11" />
+          <caret line="9" column="25" selection-start-line="9" selection-start-column="25" selection-end-line="9" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pares/server/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="23" lean-forward="true" selection-start-line="10" selection-end-line="11" />
         </state>
       </provider>
     </entry>
