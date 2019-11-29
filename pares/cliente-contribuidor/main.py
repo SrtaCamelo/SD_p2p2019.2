@@ -17,6 +17,7 @@ class Receiver(threading.Thread):
         threading.Thread.__init__(self, name="messenger_receiver")
         self.host = my_host
         self.port = my_port
+        self.chamadas = {}
 
     def listen(self):
 
