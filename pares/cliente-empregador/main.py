@@ -174,10 +174,21 @@ class PeerEmp(Receiver):
         #o parse vai encontrar as definicoes de variaveis e passalas para os colaboradores
         #O parse vai segmentar o que pode ser paralelizavel dentro de um bloco
         #Ao encontrar um prange(), todas as chamadas serao feitas de forma paralela
-        script = list(range(1000))
+        #script = list(range(1000))
+
+        script = ["operacoes.soma(2, 3)", "operacoes.subt(3, 2)","operacoes.soma(2, 3)", "operacoes.subt(3, 2)","operacoes.soma(2, 3)", "operacoes.subt(3, 2)","operacoes.soma(2, 3)", "operacoes.subt(3, 2)",]
+        roger = []
         for i in script:
-            while True:
-                pass
+            roger.append("")
+        for i in range(len(script)):
+            while roger[i] == "":
+                try:
+                    # TODO
+                    #envia uma mensagem para um colaborador
+                    #espera a resposta
+                    pass
+                except:
+                    print("timeout")
 
 def main(my_host,my_port,server_host,server_port,login,senha):
     print("@:\t\t", my_host)

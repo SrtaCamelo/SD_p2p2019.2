@@ -247,5 +247,4 @@ th = None
 ims, suck, sand = main(my_host,my_port,server_host,server_port,LOGIN,SENHA)
 import operacoes
 exec(ims)
-print(ims.split("\n"))
-print()
+print(ims)
