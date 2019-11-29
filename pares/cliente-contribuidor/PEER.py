@@ -6,7 +6,6 @@ class Receiver(threading.Thread):
         threading.Thread.__init__(self, name="messenger_receiver")
         self.host = my_host
         self.port = my_port
-        self.chamadas = {}
 
     def listen(self):
 
@@ -29,7 +28,19 @@ class PeerColab(Receiver):
     def listen(self):
         while True:
             try:
-                
-                pass
+                data, addr = sock.recvfrom(1024)
+                datas = data.decode()
+                meio = datas.find(":")
+                controle = datas[:meio]
+                funcao = datas[meio:]
+                if addr[0] == self.sender.host:
+                    if not (controle in self.sender.tarefas):
+                        ex = exec(funcao)
+                        self.sender.tarefas[controle] = [funcao, ex]
+                    if controle in self.sender.tarefas:
+                        dest = (self.sender.host, int(self.sender.port))
+                        self.sender.sendto(bytes(self.sender.tarefas[controle][1]), dest)
+                    else:
+                        pass
             except:
-                pass
+                print(vish)
