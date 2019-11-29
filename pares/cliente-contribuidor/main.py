@@ -183,6 +183,8 @@ class ColabStart(Receiver):
         #salva o .py
         for i in modulos:
             with open(i, 'w') as ot:
+                for j in modulos[i]:
+                    ot.
                 pass
 
     def run(self):
