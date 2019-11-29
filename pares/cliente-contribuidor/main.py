@@ -158,7 +158,7 @@ class ColabStart(Receiver):
                 if addr[0] == self.sender.host and datas.split()[0] in modulos and esp:
                     md = datas.split()[0]
                     n_linha = datas.split()[1]
-                    linha = datas.split(n_linha)[1:]
+                    linha = datas.split(n_linha)[1][1:]
                     print(n_linha, linha)
                     n_linha = int(n_linha)
                     modulos[md][1][n_linha] = linha
@@ -183,9 +183,10 @@ class ColabStart(Receiver):
         #salva o .py
         for i in modulos:
             with open(i, 'w') as ot:
-                for j in modulos[i]:
-                    ot.
-                pass
+                for j in modulos[i][1]:
+                    print(j)
+                    ot.write(j) #ha algo de errado, nao sei o que eh
+                #ot.writelines(modulos[i][1])
 
     def run(self):
         self.listen()
