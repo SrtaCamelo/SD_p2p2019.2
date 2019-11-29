@@ -6,6 +6,7 @@ import pandas as pd
 ENCODING = 'utf-8'
 
 
+print("##############################################\n############  INICIANDO EMPREGADOR  ############\n##############################################")
 
 
 
@@ -138,12 +139,10 @@ class FeetchCol(Receiver):
                         posicao = int(datas.split()[1])
                         linha = modulos[modulo][1][posicao].decode()
                         porta = int(datas.split()[-1])
-                        print("tem que printar isso")
                         mensagem = "%s %i %s"%(modulo,posicao,linha)
                         mensagem = bytes(mensagem, "utf-8")
                         print(type(mensagem))
                         self.sender.sock.sendto(mensagem, (addr[0], porta))
-                        print("tem que printar isso")
                     #O empregador vai transferir o arquivo para o colaborador
                     elif datas.split()[0] == "Estamos":
                         mensagem = ""
@@ -185,14 +184,16 @@ class PeerEmp(Receiver):
                 try:
                     # TODO
                     #envia uma mensagem para um colaborador
+                    #"codigodecontrole:operacoes.soma(2, 3)"
+
                     #espera a resposta
                     pass
                 except:
                     print("timeout")
 
 def main(my_host,my_port,server_host,server_port,login,senha):
-    print("@:\t\t", my_host)
-    print("port:\t\t", my_port)
+    print("IP_EMPREGADOR:\t\t", my_host)
+    print("PORTA_EMPREGADOR:\t\t", my_port)
 
     #Aqui eh gerada a unica porta para enviar informacao
     sendera = Sender()

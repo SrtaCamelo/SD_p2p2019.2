@@ -9,6 +9,7 @@ ENCODING = 'utf-8'
 
 
 
+print("##############################################\n############  INICIANDO COLABORADOR  ############\n##############################################")
 
 
 class Receiver(threading.Thread):
@@ -108,8 +109,6 @@ class ColabStart(Receiver):
                 data, addr = self.sock.recvfrom(1024)
 
                 data = data.decode()
-                print("printando decode")
-                print(data)
                 if addr[0]==self.sender.host:
                     if data == "ONDE ESTA AGORA?":
                         self.sender.message = 'AMIGO EU ESTOU AQUI!'
@@ -124,8 +123,7 @@ class ColabStart(Receiver):
                         esp = False
             except:
                 self.sender.message = "ESTOU TE ESPERANDO!!!"
-                print("nao sei")
-                
+
         esp = True
 
         self.sock.settimeout(1)
@@ -139,7 +137,6 @@ class ColabStart(Receiver):
         while esp:
             try:
                 if len(modulos) > 0:
-                    print("here")
                     #descobre qual o modulo e qual a linha
                     md, ln = nextLine(modulos)
                     if md == None:
@@ -207,8 +204,8 @@ def nextLine(dicio):
 
 
 def main(my_host,my_port,server_host,server_port,login,senha):
-    print("@:\t\t", my_host)
-    print("port:\t\t", my_port)
+    print("IP_CONTRIBUIDOR:\t\t", my_host)
+    print("PORTA_CONTRIBUIDOR:\t\t", my_port)
 
     #Aqui eh gerada a unica porta para enviar informacao
     sender = Sender()

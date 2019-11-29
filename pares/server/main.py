@@ -8,7 +8,7 @@ import pandas as pd
 import time
 
 ENCODING = 'utf-8'
-
+print("##############################################\n############  INICIANDO SERVIDOR  ############\n##############################################")
 
 def openUsers():
     col = pd.read_csv('colaborador.csv', header = 0)
@@ -22,6 +22,7 @@ def saveUsers():
     pass
 
 
+# Receptor
 class Receiver(threading.Thread):
 
     def __init__(self, my_host, my_port):
@@ -41,7 +42,7 @@ class Receiver(threading.Thread):
     def run(self):
         self.listen()
 
-
+#Envia as Mensagens
 class Sender(threading.Thread):
 
     def __init__(self):
@@ -51,22 +52,17 @@ class Sender(threading.Thread):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)  # UDP
         self.message = ""
 
+    # O programa fica em uma thrade tentando enviar uma mensagem
     def run(self):
         otra = False
         while True:
-
             if self.message != "":
                 try:
                     message = bytes(self.message, 'utf-8')
-                    print(self.message)
-                    print(message)
                     self.sock.sendto(message, (self.host, self.port))
-                    print(self.host)
-                    print(self.port)
                     self.message = ""
                 except ValueError:
                     print("erro")
-                    #print(ValueError)
                     self.message = ""
             if otra:
                 #se comunica com todos os vizinhos.
@@ -75,24 +71,30 @@ class Sender(threading.Thread):
 class PeerServer(Receiver):
     def __init__(self,my_host,my_port,sender,col, emp, con):
         threading.Thread.__init__(self, name="Server")
-        self.host = my_host
-        self.port = my_port
-        self.sender = sender
+        self.host = my_host #IP
+        self.port = my_port #PORTA
+        self.sender = sender #OBJETO SENDER
         self.col = col
         self.emp = emp
         self.con = con
-        self.sessao_col = {} # Sessao Atual do Colaborador
-        self.sessao_emp = {} # Sessao Atual do Empregador => [IP_EMPREGADOR, PORTA_EMPREGADOR, LOGIN_EMPREGADOR, QUANT_MAQUINAS_ALOCADAS]
-        self.sessao_emp_ip = {} # A partir do IP do Empregador tem-se o nome do projeto
+        # Dicionário da Sessao Atual no Servidor do Colaborador (CONtRIBUIDOR) - Lista com todos os contribuidores logados
+        # {"IP_COLABORADOR":[LOGIN_COLABORADOR,PORTA_COLABORADOR , THREADS, LISTA_PROJETOS, PROJETO_ATUAL]}
+        self.sessao_col = {}
+        #  Dicionário da Sessao Atual no Servidor do Empregador  - Lista com todos os EMPREGADORES logados
+        # {"NOME_PROJETO":[IP_EMPREGADOR, PORTA_EMPREGADOR, LOGIN_EMPREGADOR, QUANT_MAQUINAS_ALOCADAS]}
+        self.sessao_emp = {}
+        #self.sessao_emp_ip = {} # A partir do IP do Empregador tem-se o nome do projeto
 
     def listen(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.bind((self.host, self.port))
 
         while True:
+            # data => o dado em byte da mensagem
+            # addr[0] => IP
             data, addr = sock.recvfrom(1024)  # buffer size is 1024 bytes
             datas = data.decode()
-            print ("received message:", addr, datas)
+            print ("received message: ", datas)
 
             operacao = datas.split()[0]
 
@@ -100,13 +102,9 @@ class PeerServer(Receiver):
             if operacao == 'Hello':
                 self.sender.host = addr[0]
                 self.sender.port = int(datas.split()[-1])
-                print(self.sender.port)
                 #time.sleep(2)
                 # O Server manda a chave publica
                 self.sender.message = "%i"%public
-               # print(self.sender.host)
-
-
 
             # O server le a mensagem e verifica o login e senha
             # CONLABORADOR
@@ -117,9 +115,8 @@ class PeerServer(Receiver):
                 col_user = self.col.loc[login]
                 col_senha = col_user[0]
 
-                print(senha, col_senha)
-                
                 if senha == col_senha:
+
                     self.sender.host = addr[0]
                     self.sender.port = int(datas.split()[-1])
                     self.sender.message = "OKAY!"
@@ -131,8 +128,6 @@ class PeerServer(Receiver):
                     
                     self.sessao_col[indice] = [login, porta, th, projetos, ""]
 
-                print(self.sessao_col)
-
             # Empregador
             elif operacao == "ACESSEMP:":
                 login = datas.split()[1]
@@ -142,22 +137,20 @@ class PeerServer(Receiver):
                 col_user = self.col.loc[login]
                 col_senha = col_user[0]
 
-                print(senha, col_senha)
-                
                 if senha == col_senha:
                     emp_proje = self.emp.loc[proje].to_list()
                     if login == emp_proje[0]:
+                        print("########## LOGIN E SENHA CORRETA ###########")
                         self.sender.host = addr[0]
                         self.sender.port = int(datas.split()[-1])
                         self.sender.message = "OKAY!"
 
-                        #Ainda falta guardar o empregador na tabela self.emp
                         ip_emp = addr[0]
                         porta = datas.split()[-1]
                         # RECEBE O NOME DO PROJETO[IP_EMPREGADOR, PORTA_EMPREGADOR, LOGIN_EMPREGADOR, QUANT_MAQUINAS_ALOCADAS]
                         self.sessao_emp[proje] = [ip_emp,porta,login,0]
-                        print(self.sessao_emp)
-                    
+                    print("SESSAO_EMP: ",self.sessao_emp, "\n")
+
             # COLABORADOR
             elif datas == "ESTOU TE ESPERANDO!!!":
                 # reenvia as informacoes do empregador, ou nao faz nada
@@ -183,15 +176,11 @@ class PeerServer(Receiver):
                 nome_projeto = datas.split()[1] # NOME DO PROJETO
                 aloc_emp     = data.split()[2] # QUANTIDADE DE MAQUINAS ALOCADAS (VISAO DO EMPREGADOR)
                 ip_col = busca_ipColaborador(self.sessao_col,nome_projeto)
-                print(aloc_emp)
-                print(int(self.sessao_emp[nome_projeto][-1]))
                 lista_ip_porta_colab = busca_colaboradores_alocados(self.sessao_col, nome_projeto)
-
                 if int(aloc_emp) != int(self.sessao_emp[nome_projeto][-1]):  # RESOLVENDO PROBLEMA DE INCONSISTENCIA
                     self.sessao_emp[nome_projeto][-1] = len(lista_ip_porta_colab)
-                    print('printando lista')
-                    print(lista_ip_porta_colab)
                     ## ENVIAR PARA O EMPREGADOR A LISTA DE COLABORADORES IP-PORTA
+                    print("ENVIANDO PARA O EMPREGADOR A LISTA DE COLABORADORES")
                     for lista in lista_ip_porta_colab:
                         self.sender.host = ip_emp
                         self.sender.port = int(porta_emp)
@@ -223,7 +212,7 @@ class PeerServer(Receiver):
                     self.sender.sock.sendto(message, (ip_col, int(porta_col)))
 
                 else:  # NAO EXISTE INCONSISTENCIA
-                    print("puta que pariu22")
+                    print("NÃO EXISTE COLABORADOR LOGADO")
             # O Server pede a confirmacao dos clientes para manterem logados
             elif datas == 'AMIGO EU ESTOU AQUI!':
                 pass
@@ -246,8 +235,10 @@ def busca_colaboradores_alocados(s_col,nom_pro):
 
 
 def main(my_host,my_port):
-    print("@:\t\t", my_host)
-    print("port:\t\t", my_port)
+    print("IP_SERVIDOR:\t\t", my_host)
+    print("PORTA_SERVIDOR:\t\t", my_port)
+    print( "##############################################\n############   ESPERANDO CONEXÃO  ############\n##############################################")
+
     sender = Sender()
     sender.start()
 
