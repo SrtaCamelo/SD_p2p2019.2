@@ -1,9 +1,12 @@
+import threading
+
 class Receiver(threading.Thread):
 
     def __init__(self, my_host, my_port):
         threading.Thread.__init__(self, name="messenger_receiver")
         self.host = my_host
         self.port = my_port
+        self.chamadas = {}
 
     def listen(self):
 
@@ -22,11 +25,11 @@ class PeerColab(Receiver):
         threading.Thread.__init__(self, name="Colab_%i"%th)
         self.sock = sock
         self.sender = sender
-        self.chamadas = {}
 
     def listen(self):
-        while:
+        while True:
             try:
+                
                 pass
             except:
                 pass
