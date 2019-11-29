@@ -128,22 +128,72 @@ class ColabStart(Receiver):
                 
         esp = True
 
+        self.sock.settimeout(1)
+
+        modulos = {}
+
+        parhost = (self.sender.host, self.sender.port)
+        print(parhost)
+
         #recebe o(os) script(s)
         while esp:
             try:
-                
+                if len(modulos) > 0:
+                    print("here")
+                    #descobre qual o modulo e qual a linha
+                    md, ln = nextLine(modulos)
+                    if md == None:
+                        esp = False
+                    
+                    else:
+                        mensagem = "%s %i %i"%(md, ln, myaddr)
+                        mensagem = bytes(mensagem, "utf-8")
+                        print(mensagem)
+                        self.sender.sock.sendto(mensagem, parhost)
+                    
                 # espera a alocacao
                 data, addr = self.sock.recvfrom(1024)
                 datas = data.decode()
-
-
-            except:
-                print("Tiem ot")
+                print(datas)
+                if addr[0] == self.sender.host and datas.split()[0] in modulos and esp:
+                    md = datas.split()[0]
+                    n_linha = datas.split()[1]
+                    linha = datas.split(n_linha)[1:]
+                    print(n_linha, linha)
+                    n_linha = int(n_linha)
+                    modulos[md][1][n_linha] = linha
+                elif addr[0] == self.sender.host and datas[0] == " " and len(modulos) == 0:
+                    md = datas.split()
+                    for i in range(0, len(md), 2):
+                        if not(i in modulos):
+                            #lista passada como valor do dicio
+                            lt = []
+                            for j in range(int(md[i+1])):
+                                lt.append("")
+                            modulos[md[i]] = [int(md[i+1]), lt]
+                            
+            except Exception as e:
+                print(e)
+                mensagem = bytes("Estamos aqui. %i"%myaddr, "utf-8")
+                if len(modulos) == 0 and esp:
+                    self.sender.sock.sendto(mensagem, parhost)
+                else:
+                    pass
         #Espera o arquivo
         #salva o .py
+        for i in modulos:
+            with open(i, 'w') as ot:
+                pass
 
     def run(self):
         self.listen()
+
+def nextLine(dicio):
+    for i in dicio:
+        for j in range(dicio[i][0]):
+            if dicio[i][1][j] == "":
+                return i, j
+    return None, None
 
 
 

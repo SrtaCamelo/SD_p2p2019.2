@@ -110,7 +110,7 @@ class FeetchCol(Receiver):
                 data = f.readlines()
             modulos[i] = [len(data), data]
 
-        #print(modulos)
+        print(modulos)
 
         while esp:
             try:
@@ -118,8 +118,9 @@ class FeetchCol(Receiver):
                 self.sender.message = mensagem
                 data, addr = self.sock.recvfrom(1024)
                 datas = data.decode()
-                print(datas)
-                if addr[0] == server_host:
+                print(addr, datas)
+                #observar que o server_host tem que ser diferentes do colab_host
+                if addr[0] == server_host and (datas == "ONDE ESTA AGORA?" or datas[:3] == "LET"):
                     if datas == "ONDE ESTA AGORA?":
                         self.sender.message = 'AMIGO EU ESTOU AQUI!'
                     elif datas.split("!")[0] == "LET IT GO":
@@ -131,21 +132,27 @@ class FeetchCol(Receiver):
                             self.server.alocados += 1
                             self.server.col[col] = {"threads":th, "portas":portas, "tarefas":{}}
                         print(self.server.col)
-                elif addr[0] in self.col:
+                elif addr[0] in self.server.col:
                     if datas.split()[0] in modulos:
                         modulo = datas.split()[0]
                         posicao = int(datas.split()[1])
+                        linha = modulos[modulo][1][posicao].decode()
                         porta = int(datas.split()[-1])
-                        self.sender.sendto(modulos[modulo][1][posicao] (addr[0], porta))
+                        print("tem que printar isso")
+                        mensagem = "%s %i %s"%(modulo,posicao,linha)
+                        mensagem = bytes(mensagem, "utf-8")
+                        print(type(mensagem))
+                        self.sender.sock.sendto(mensagem, (addr[0], porta))
+                        print("tem que printar isso")
                     #O empregador vai transferir o arquivo para o colaborador
-                    else:
+                    elif datas.split()[0] == "Estamos":
                         mensagem = ""
                         for i in modulos:
                             mensagem = mensagem + " %s %i"%(i, modulos[i][0])
                         porta = int(datas.split()[-1])
-                        self.sender.sendto(bytes(mensagem), (addr[0], porta))
-            except:
-                print("Time Out")
+                        self.sender.sock.sendto(bytes(mensagem, "utf-8"), (addr[0], porta))
+            except Exception as e:
+                print(repr(e))
 
         #Espera o arquivo
         #salva o .py
