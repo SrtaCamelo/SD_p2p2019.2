@@ -181,12 +181,18 @@ class ColabStart(Receiver):
                     pass
         #Espera o arquivo
         #salva o .py
+        import_string = ""
+        
         for i in modulos:
+            import_string = import_string + i[:-3] + "\n"
             with open(i, 'w') as ot:
                 for j in modulos[i][1]:
                     print(j)
                     ot.write(j) #ha algo de errado, nao sei o que eh
                 #ot.writelines(modulos[i][1])
+
+        print(import_string)
+        return import_string
 
     def run(self):
         self.listen()
@@ -219,7 +225,7 @@ def main(my_host,my_port,server_host,server_port,login,senha):
 
     #Aqui o colaborador faz o startup
     svcom = ColabStart(sock[0],sender,login,senha)
-    svcom.listen()
+    import_string = svcom.listen()
     #svcom.start()
 
     #O .py com as funcoes eh importado aqui
@@ -229,6 +235,8 @@ def main(my_host,my_port,server_host,server_port,login,senha):
         #Um objeto da classe PeerColab() eh declarado
         print(i)
 
+    return import_string, sock, sender
+
 def makehost(my_host, my_port):
     receiver = Receiver(my_host, my_port)
     oh = receiver.start()
@@ -236,6 +244,8 @@ def makehost(my_host, my_port):
 
 th = None
 
-if __name__ == '__main__':
-    main(my_host,my_port,server_host,server_port,LOGIN,SENHA)
-    print()
+ims, suck, sand = main(my_host,my_port,server_host,server_port,LOGIN,SENHA)
+import operacoes
+exec(ims)
+print(ims.split("\n"))
+print()
